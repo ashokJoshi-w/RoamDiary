@@ -179,7 +179,8 @@ app.delete("/delete-travel-story/:id", authenticateToken, async (req, res) => {
         const travelStory = await TravelStory.findOne({ _id: req.params.id, userId: req.user.userId });
         if (!travelStory) return res.status(404).json({ message: "Story not found" });
 
-        // Delete the image file from uploads folder
+        // Delete  the image file from uploads folder
+
         const imageUrl = travelStory.imageUrl;
         if (imageUrl && !imageUrl.includes('/assets/')) {
             const filename = path.basename(imageUrl);
