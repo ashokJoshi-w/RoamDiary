@@ -83,3 +83,164 @@ app.get("/get-user", authenticateToken, async (req, res) => {
         return res.status(500).json({ error: true, message: "Server error" });
     }
 });
+// Image handling routes 
+const getBaseUrl = (req) => {
+    const protocol = req.get('host').includes('localhost') || req.get('host').includes('127.0.0.1') ? 'http' : 'https';
+    return `${protocol}://${req.get('host')}`;
+};
+
+app.post("/image-upload", upload.single("image"), async (req, res) => {
+    try {
+        if (!req.file) return res.status(400).json({ error: true, message: "No file uploaded" });
+        const imageUrl = `${getBaseUrl(req)}/uploads/${req.file.filename}`;
+        res.status(200).json({ imageUrl });
+    } catch (err) { res.status(500).json({ message: "Upload error" }); }
+});
+
+app.delete("/delete-image", authenticateToken, async (req, res) => {
+    const { imageUrl } = req.query;
+    if (!imageUrl) return res.status(400).json({ message: "No URL provided" });
+
+    try {
+        // Extract filename and verify it's in the uploads folder
+        const filename = path.basename(imageUrl);
+        const filePath = path.join(__dirname, 'uploads', filename);
+
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+            res.status(200).json({ message: "Image deleted successfully" });
+        } else {
+            res.status(404).json({ message: "Image file not found" });
+        }
+    } catch (err) { 
+        res.status(500).json({ message: "Delete error", error: err.message }); 
+    }
+});
+
+// Travel Story Routes
+
+app.post("/add-travel-story", authenticateToken, async (req, res) => {
+    const { title, story, visitedLocations, imageUrl, visitedDate } = req.body;
+    if (!title || !story || !imageUrl || !visitedDate) {
+        return res.status(400).json({ message: "All fields are required" });
+    }
+
+    try {
+        const newStory = new TravelStory({
+            title, 
+            story, 
+            visitedLocations: Array.isArray(visitedLocations) ? visitedLocations : [], 
+            imageUrl,
+            visitedDate: new Date(Number(visitedDate)),
+            userId: req.user.userId
+        });
+        await newStory.save();
+        res.status(201).json({ error: false, message: "Story added", story: newStory });
+    } catch (err) { 
+        res.status(500).json({ message: "Server error", error: err.message }); 
+    }
+});
+
+app.get("/get-all-stories", authenticateToken, async (req, res) => {
+    try {
+        const stories = await TravelStory.find({ userId: req.user.userId }).sort({ visitedDate: -1 });
+        res.status(200).json({ stories });
+    } catch (err) { res.status(500).json({ message: "Fetch error" }); }
+});
+
+app.put("/edit-travel-story/:id", authenticateToken, async (req, res) => {
+    const { id } = req.params;
+    const { title, story, visitedLocations, imageUrl, visitedDate } = req.body;
+
+    try {
+        const travelStory = await TravelStory.findOne({ _id: id, userId: req.user.userId });
+        if (!travelStory) return res.status(404).json({ message: "Story not found" });
+
+        const placeholderImgUrl = `${getBaseUrl(req)}/assets/placeholder.jpg`;
+
+        travelStory.title = title || travelStory.title;
+        travelStory.story = story || travelStory.story;
+        travelStory.visitedLocations = Array.isArray(visitedLocations) ? visitedLocations : travelStory.visitedLocations;
+        travelStory.imageUrl = imageUrl || placeholderImgUrl;
+        
+        if (visitedDate) {
+            travelStory.visitedDate = new Date(Number(visitedDate));
+        }
+
+        await travelStory.save();
+        res.status(200).json({ story: travelStory, message: "Update successful" });
+    } catch (err) { 
+        res.status(500).json({ message: "Update error", error: err.message }); 
+    }
+});
+
+app.delete("/delete-travel-story/:id", authenticateToken, async (req, res) => {
+    try {
+        const travelStory = await TravelStory.findOne({ _id: req.params.id, userId: req.user.userId });
+        if (!travelStory) return res.status(404).json({ message: "Story not found" });
+
+        // Delete the image file from uploads folder
+        const imageUrl = travelStory.imageUrl;
+        if (imageUrl && !imageUrl.includes('/assets/')) {
+            const filename = path.basename(imageUrl);
+            const filePath = path.join(__dirname, 'uploads', filename);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+        }
+
+        await TravelStory.deleteOne({ _id: req.params.id, userId: req.user.userId });
+        res.status(200).json({ message: "Story and associated image deleted" });
+    } catch (err) { res.status(500).json({ message: "Delete error" }); }
+});
+
+app.put("/update-is-favourite/:id", authenticateToken, async (req, res) => {
+    try {
+        const story = await TravelStory.findOne({ _id: req.params.id, userId: req.user.userId });
+        if (!story) return res.status(404).json({ message: "Not found" });
+        story.isFavourite = req.body.isFavourite;
+        await story.save();
+        res.status(200).json({ story, message: "Updated" });
+    } catch (err) { res.status(500).json({ message: "Fav error" }); }
+});
+
+app.get("/search", authenticateToken, async (req, res) => {
+    const { query } = req.query;
+
+    if (!query) {
+        return res.status(400).json({ error: true, message: "Search query is required" });
+    }
+
+    try {
+        const searchResults = await TravelStory.find({
+            userId: req.user.userId,
+            $or: [
+                { title: { $regex: query, $options: "i" } },
+                { story: { $regex: query, $options: "i" } },
+                { visitedLocations: { $regex: query, $options: "i" } }
+            ]
+        }).sort({ visitedDate: -1 });
+        res.status(200).json({ stories: searchResults });
+    } catch (err) { res.status(500).json({ message: "Search error" }); }
+});
+
+app.get("/travel-stories/filter", authenticateToken, async (req, res) => {
+    const { startDate, endDate } = req.query;
+    try {
+        const stories = await TravelStory.find({
+            userId: req.user.userId,
+            visitedDate: { $gte: new Date(Number(startDate)), $lte: new Date(Number(endDate)) }
+        }).sort({ visitedDate: -1 });
+        res.status(200).json({ stories });
+    } catch (err) { res.status(500).json({ message: "Filter error" }); }
+});
+
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+        console.log("✅ MongoDB Connected Successfully");
+        const PORT = process.env.PORT || 8000;
+        app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+    })
+    .catch((err) => {
+        console.error("❌ MongoDB Connection Error:", err.message);
+    });
