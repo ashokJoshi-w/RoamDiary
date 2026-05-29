@@ -1,1 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
+
+@layer base {
+  
+  .rdp-root, .rdp {
+    --rdp-accent-color: rgb(148, 92, 202) !important;
+    --rdp-accent-background-color: white !important;
+    --rdp-day_button-border-radius: 8px !important;
+  }}
+@theme {
+  --font-display: 'Poppins', sans-serif;
+  --color-primary: #05b6d3;
+  --color-secondary: #EF863E;
+}
+
+
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: blueviolet;
+  border-radius: 3px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background-color: rgb(172, 119, 222);
+}
+
+@utility input-box {
+  @apply w-full text-sm bg-violet-600/5 rounded px-5 py-3 mb-4 outline-none;
+}
+
+@utility btn-primary {
+  @apply w-full bg-violet-400 shadow-lg shadow-violet-200/50 p-2.5 rounded-full my-1 text-white hover:bg-violet-600;
+}
+
+@utility model-box {
+  
+  @apply w-[80vw] md:w-[40%] max-h-[85vh] bg-white rounded-lg mx-auto mt-14 p-5 overflow-y-auto;
+}
+@utility login-ui-box {
+  @apply w-80 h-112.5 rounded-full bg-violet-400 absolute rotate-45;
+}
+
+@utility btn-small {
+  @apply inline-flex items-center gap-2 text-[13px] font-medium text-purple-600 bg-purple-200/40 hover:bg-purple-200/70 rounded px-2 py-1 cursor-pointer;}
+
+
+@utility btn-delete {
+  @apply bg-rose-50 text-rose-500 shadow-rose-100 border border-rose-100/0 hover:bg-rose-500 hover:text-white;
+}
+@utility input-label {
+ @apply text-xs text-slate-400;
+}   
