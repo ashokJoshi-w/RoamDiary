@@ -1,0 +1,105 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import PassWordInput from '../../components/Input/PasswordInput.jsx';
+import { validateEmail } from '../../utils/helper.js';
+import axiosInstance from '../../utils/axiosInstance.js';
+import signupBg from '../../assets/images/signup-bg.jpg';
+
+const SignUp = () => {
+  const navigate = useNavigate();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    if (!name) {
+      setError('Please enter your name.');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (!password) {
+      setError('Please enter your password.');
+      return;
+    }
+
+    setError("");
+
+    try {
+      const response = await axiosInstance.post('/create-account', {
+        fullName: name,
+        email: email,
+        password: password,
+      });
+
+      // Match the structure from your Postman test
+      if (response.data && response.data.accessToken) {
+        localStorage.setItem('token', response.data.accessToken);
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      // LOG THE ERROR TO CONSOLE SO YOU CAN SEE THE PORT ISSUES
+      console.log("Error Response:", error.response);
+
+      if (error.response && error.response.data && error.response.data.message) {
+        // This will catch "User already exists" from your backend
+        setError(error.response.data.message);
+      } else if (error.code === "ERR_NETWORK") {
+        setError("Network Error: Is your backend running on port 8000?");
+      } else {
+        setError('An error occurred. Please try again later.');
+      }
+    }
+  };
+
+  return (
+    <div className='h-screen bg-violet-100 overflow-hidden relative'>
+      <div className='login-ui-box right-10 -top-40 hidden md:block' />
+      <div className='login-ui-box bg-violet-400 -bottom-40 right-1/2 hidden md:block' />
+
+      <div className='container h-screen flex items-center justify-center px-6 md:px-20 mx-auto'>
+        <div 
+          className="hidden md:flex w-2/4 h-[85vh] items-end bg-center rounded-l-lg p-10 z-50 bg-no-repeat bg-cover"
+          style={{ backgroundImage: `url(${signupBg})` }}
+        >
+          <div>
+            <h4 className='text-4xl text-white font-semibold leading-[58px]'>Join the<br /> Adventure</h4>
+            <p className='text-[15px] text-white leading-6 pr-7 mt-4'>
+              Create an account and start documenting your travel experiences with TripScribe.
+            </p>
+          </div>
+        </div>
+
+        <div className='w-full md:w-2/4 bg-white h-auto md:h-[85vh] rounded-lg md:rounded-l-none md:rounded-r-lg relative p-8 md:px-20 flex flex-col justify-center shadow-lg shadow-cyan-200/20 '>
+          <form onSubmit={handleSignUp}>
+            <h4 className='text-2xl font-semibold mb-5 text-center'>SignUp</h4>
+            <input type='text' placeholder='Full Name' className='input-box'
+              value={name} onChange={({ target }) => setName(target.value)} />
+            <input type='text' placeholder='Email' className='input-box'
+              value={email} onChange={({ target }) => setEmail(target.value)} />
+
+            <PassWordInput value={password} onChange={({ target }) => setPassword(target.value)} />
+
+            {error && <p className='text-red-500 text-xs pb-1'>{error}</p>}
+            <button type='submit' className='btn-primary mt-2'>CREATE ACCOUNT</button>
+            <p className='text-center text-sm text-slate-400 my-3'>Already have an account?</p>
+            <button type='button' className='w-full text-violet-500 font-medium underline' onClick={() => navigate('/login')}>LOGIN</button>
+            <p className='text-[10px] text-slate-400 text-center mt-6 uppercase tracking-widest'>
+              By signing up, you agree to our <br />
+              <span className='underline cursor-pointer'>Terms of Service</span> & <span className='underline cursor-pointer'>Privacy Policy</span>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default SignUp;
