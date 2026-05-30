@@ -1,0 +1,185 @@
+import React, { useState, useEffect } from 'react';
+import { MdAdd, MdUpdate, MdClose, MdDeleteOutline } from 'react-icons/md';
+import DateSelector from '../../components/Input/DateSelector';
+import ImageSelector from '../../components/Input/ImageSelector';
+import TagInput from '../../components/Input/TagInput';
+import moment from 'moment';
+import axiosInstance from '../../utils/axiosInstance';
+import uploadImage from '../../utils/uploadImage';
+import { toast } from 'react-toastify';
+
+const AddEditTravelStory = React.memo(({ storyInfo, type, onClose, onAddStory, onUpdateStory, onDeleteStory }) => {
+  const [title, setTitle] = useState(storyInfo?.title || "");
+  const [story, setStory] = useState(storyInfo?.story || "");
+  const [visitedDate, setVisitedDate] = useState(storyInfo?.visitedDate || null);
+  const [storyImg, setStoryImg] = useState(storyInfo?.imageUrl || null);
+  const [visitedLocation, setVisitedLocation] = useState(storyInfo?.visitedLocations || []);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (type === "edit" && storyInfo) {
+      setTitle(storyInfo.title);
+      setStory(storyInfo.story);
+      setVisitedDate(storyInfo.visitedDate ? new Date(storyInfo.visitedDate) : null);
+      setVisitedLocation(storyInfo.visitedLocations || []);
+      setStoryImg(storyInfo.imageUrl);
+    } else {
+      setTitle("");
+      setStory("");
+      setVisitedDate(null);
+      setVisitedLocation([]);
+      setStoryImg(null);
+    }
+  }, [type, storyInfo]);
+
+  const handleDeleteImg = async () => {
+    try {
+      if (typeof storyImg === 'string') {
+        const response = await axiosInstance.delete("/delete-image", {
+          params: { imageUrl: storyImg }
+        });
+        if (response.data && !response.data.error) {
+          setStoryImg(null);
+          toast.success("Image removed");
+        }
+      } else {
+        setStoryImg(null);
+      }
+    } catch (error) {
+      toast.error("Failed to delete image");
+    }
+  };
+
+  const handleAddOrUpdateClick = async () => {
+    if (!title) { setError("Please enter the title"); return; }
+    if (!story) { setError("Please enter the story"); return; }
+    if (!storyImg) { setError("Please select an image"); return; }
+    setError("");
+    setLoading(true);
+
+    try {
+      let imageUrl = "";
+
+      // If storyImg is a new file (object), upload it first
+      if (storyImg && typeof storyImg === 'object') {
+        const imgUploadRes = await uploadImage(storyImg);
+        imageUrl = imgUploadRes.imageUrl || "";
+      } else {
+        // If it's already a string, it's an existing URL
+        imageUrl = storyImg || "";
+      }
+
+      const payload = {
+        title,
+        story,
+        imageUrl: imageUrl,
+        visitedLocations: visitedLocation,
+        visitedDate: visitedDate ? moment(visitedDate).valueOf() : moment().valueOf(),
+      };
+
+      if (type === 'edit') {
+        await onUpdateStory(storyInfo._id, payload);
+      } else {
+        await onAddStory(payload);
+      }
+    } catch (err) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className='relative'>
+      <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-3'>
+        <h5 className='text-xl font-medium text-slate-700'>
+          {type === "add" ? "Add Story" : "Update Story"}
+        </h5>
+
+        <div className='flex items-center gap-3 bg-violet-50/50 p-2 rounded-lg w-full md:w-auto overflow-x-auto'>
+          {type === 'add' ? (
+            <button
+              className={`btn-small flex items-center gap-2 whitespace-nowrap ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              onClick={handleAddOrUpdateClick}
+              disabled={loading}
+            >
+              {loading ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <MdAdd className='text-lg' />}
+              {loading ? "SAVING..." : "ADD STORY"}
+            </button>
+          ) : (
+            <>
+              <button
+                className={`btn-small flex items-center gap-2 whitespace-nowrap ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                onClick={handleAddOrUpdateClick}
+                disabled={loading}
+              >
+                {loading ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <MdUpdate className='text-xl' />}
+                {loading ? "SAVING..." : "UPDATE STORY"}
+              </button>
+
+              <button
+                className={`btn-small bg-red-50 text-red-500 hover:bg-red-100 border-red-100 flex items-center gap-2 whitespace-nowrap ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                onClick={() => onDeleteStory(storyInfo)}
+                disabled={loading}
+              >
+                {loading ? (
+                  <div className="w-3 h-3 border-2 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+                ) : (
+                  <MdDeleteOutline className='text-xl' />
+                )}
+                {loading ? "DELETING..." : "DELETE"}
+              </button>
+            </>
+          )}
+          <button onClick={onClose} disabled={loading} className='ml-auto'>
+            <MdClose className='text-xl text-slate-400' />
+          </button>
+        </div>
+      </div>
+
+      {error && <p className='text-red-500 text-xs pt-2 text-right'>{error}</p>}
+
+      <div className='flex-1 flex flex-col gap-2 pt-4'>
+        <label className='input-label'>TITLE</label>
+        <input
+          type='text'
+          className='text-slate-950 outline-none text-xl md:text-2xl font-semibold'
+          placeholder='A day at ....'
+          value={title}
+          disabled={loading}
+          onChange={({ target }) => setTitle(target.value)}
+        />
+
+        <div className='my-3'>
+          <DateSelector date={visitedDate} setDate={setVisitedDate} />
+        </div>
+
+        <ImageSelector
+          image={storyImg}
+          setImage={setStoryImg}
+          handleDeleteImg={handleDeleteImg}
+        />
+
+        <div className='flex flex-col gap-2 mt-4'>
+          <label className='input-label'>STORY</label>
+          <textarea
+            className='text-sm text-slate-950 bg-slate-50 p-2 rounded outline-none resize-none'
+            placeholder='Your Story'
+            rows={10}
+            value={story}
+            disabled={loading}
+            onChange={({ target }) => setStory(target.value)}
+          />
+        </div>
+
+        <div className='pt-3 pb-6'>
+          <label className='input-label'>VISITED LOCATION</label>
+          <TagInput tags={visitedLocation} setTags={setVisitedLocation} />
+        </div>
+      </div>
+    </div>
+  );
+});
+
+export default AddEditTravelStory;
