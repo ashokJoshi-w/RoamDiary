@@ -11,7 +11,9 @@ const Login = () => {
   const [error, setError] = React.useState('');
 
   const handleLogin = async (e) => {
+    console.log("Login button clicked");
     e.preventDefault();
+    
 
     if (!validateEmail(email)) {
       setError('Please enter a valid email address.');
@@ -31,22 +33,18 @@ const Login = () => {
         password: password,
       });
 
+      console.log("LOGIN RESPONSE:", response.data);
 
       if (response.data && response.data.accessToken) {
         localStorage.setItem('token', response.data.accessToken);
         navigate('/dashboard');
       }
     } catch (error) {
-
-      console.error("Login Error:", error);
-
-      if (error.response && error.response.data && error.response.data.message) {
-        setError(error.response.data.message);
-      } else {
-        setError('An error occurred. Please try again later.');
-      }
+      console.log("Error Response:", error.response?.data);
+      console.log("Status:", error.response?.status);
     }
   };
+
   return (
     <div className='h-screen bg-violet-100 overflow-hidden relative'>
       <div className='login-ui-box right-10 -top-40 hidden md:block' />
@@ -89,5 +87,7 @@ const Login = () => {
     </div>
   )
 }
+
+
 
 export default Login

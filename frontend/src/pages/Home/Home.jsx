@@ -4,7 +4,7 @@ import Navbar from '../../components/Navbar.jsx';
 import axiosInstance from '../../utils/axiosInstance.js';
 import { MdAdd } from 'react-icons/md';
 import Modal from 'react-modal';
-import TravelStoryCard from '../../components/Cards/TravelStoryCard.jsx';
+import TravelStoryCard from '../../components/Cards/TravelStory.jsx';
 import EmptyCard from '../../components/Cards/EmptyCard.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'

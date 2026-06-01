@@ -27,6 +27,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+
+
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+);
+
 // Create folder if it does not exist
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
@@ -45,7 +52,7 @@ app.post("/create-account", async (req, res) => {
         const user = new User({ fullName, email: email.toLowerCase(), password: hashedPassword });
         await user.save();
 
-        const accessToken = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '72h' });
+        const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '72h' });
         return res.status(201).json({ error: false, user: { fullName: user.fullName, email: user.email }, accessToken, message: "Registration successful" });
     } catch (error) {
         console.error("Registration Error:", error);
@@ -67,7 +74,7 @@ app.post("/login", async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) return res.status(400).json({ message: "Invalid credentials" });
 
-        const accessToken = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '72h' });
+        const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '72h' });
         return res.json({ error: false, message: "Login successful", user: { fullName: user.fullName, email: user.email }, accessToken });
     } catch (error) {
         console.error("Login Error:", error);

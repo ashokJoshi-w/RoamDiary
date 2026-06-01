@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import ProfileInfo from './Cards/ProfileInfo';
+import ProfileInfo from './cards/ProfileInfo.jsx';
 import SearchBar from './Input/SearchBar';
 
 const Navbar = React.memo(({ userInfo, searchQuery, setSearchQuery, onSearchNote, handleClearSearch }) => {
