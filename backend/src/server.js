@@ -7,13 +7,18 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 const fs = require('fs');
-const path = require('path');
+ 
+const path = require("path");
 const { authenticateToken } = require('./utilities');
 
 const User = require('./models/user.model');
 const TravelStory = require('./models/travelStory.model');
 
 const app = express();
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "../uploads"))
+);
 
 app.use(cors({
     origin: [process.env.FRONTEND_URL, "http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173"],
@@ -28,11 +33,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 
-
-app.use(
-  "/uploads",
-  express.static(path.join(__dirname, "uploads"))
-);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Create folder if it does not exist
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -91,6 +92,12 @@ app.get("/get-user", authenticateToken, async (req, res) => {
         return res.status(500).json({ error: true, message: "Server error" });
     }
 });
+
+// Test routes
+app.get("/test", (req, res) => {
+  res.send("Backend working");
+});
+
 // Image handling routes 
 const getBaseUrl = (req) => {
     const protocol = req.get('host').includes('localhost') || req.get('host').includes('127.0.0.1') ? 'http' : 'https';
@@ -127,25 +134,36 @@ app.delete("/delete-image", authenticateToken, async (req, res) => {
 
 // Travel Story Routes
 
-app.post("/add-travel-story", authenticateToken, async (req, res) => {
-    const { title, story, visitedLocations, imageUrl, visitedDate } = req.body;
-    if (!title || !story || !imageUrl || !visitedDate) {
-        return res.status(400).json({ message: "All fields are required" });
-    }
-
+app.post(
+  "/add-travel-story",
+  authenticateToken,
+  // ❌ REMOVE THIS: upload.single("image"),
+  async (req, res) => {
     try {
-        const newStory = new TravelStory({
-            title, 
-            story, 
-            visitedLocations: Array.isArray(visitedLocations) ? visitedLocations : [], 
-            imageUrl,
-            visitedDate: new Date(Number(visitedDate)),
-            userId: req.user.userId
+      // Receive imageUrl directly from req.body instead of req.file
+      const { title, story, visitedLocations, visitedDate, imageUrl } = req.body;
+
+      if (!title || !story || !visitedDate) {
+        return res.status(400).json({
+          error: true,
+          message: "All fields are required",
         });
-        await newStory.save();
-        res.status(201).json({ error: false, message: "Story added", story: newStory });
-    } catch (err) { 
-        res.status(500).json({ message: "Server error", error: err.message }); 
+      }
+
+      const newStory = new TravelStory({
+        title,
+        story,
+        visitedLocations: visitedLocations ? (Array.isArray(visitedLocations) ? visitedLocations : JSON.parse(visitedLocations)) : [],
+        imageUrl: imageUrl || null, // Saves the string directly
+        visitedDate: new Date(Number(visitedDate)),
+        userId: req.user.userId,
+      });
+
+      await newStory.save();
+      res.status(201).json({ error: false, message: "Story added successfully", story: newStory });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: true, message: err.message });
     }
 });
 
@@ -164,21 +182,24 @@ app.put("/edit-travel-story/:id", authenticateToken, async (req, res) => {
         const travelStory = await TravelStory.findOne({ _id: id, userId: req.user.userId });
         if (!travelStory) return res.status(404).json({ message: "Story not found" });
 
-        const placeholderImgUrl = `${getBaseUrl(req)}/assets/placeholder.jpg`;
-
+        // Update fields if provided in the text payload
         travelStory.title = title || travelStory.title;
         travelStory.story = story || travelStory.story;
         travelStory.visitedLocations = Array.isArray(visitedLocations) ? visitedLocations : travelStory.visitedLocations;
-        travelStory.imageUrl = imageUrl || placeholderImgUrl;
+        
+        // Directly save the incoming string URL path passed from your React state
+        if (imageUrl) {
+            travelStory.imageUrl = imageUrl;
+        }
         
         if (visitedDate) {
             travelStory.visitedDate = new Date(Number(visitedDate));
         }
 
         await travelStory.save();
-        res.status(200).json({ story: travelStory, message: "Update successful" });
+        res.status(200).json({ story: travelStory, message: "Update successful", error: false });
     } catch (err) { 
-        res.status(500).json({ message: "Update error", error: err.message }); 
+        res.status(500).json({ message: "Update error", error: true, details: err.message }); 
     }
 });
 
@@ -243,6 +264,7 @@ app.get("/travel-stories/filter", authenticateToken, async (req, res) => {
         res.status(200).json({ stories });
     } catch (err) { res.status(500).json({ message: "Filter error" }); }
 });
+
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
