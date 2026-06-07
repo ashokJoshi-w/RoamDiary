@@ -72,7 +72,7 @@ const SignUp = () => {
           <div>
             <h4 className='text-4xl text-white font-semibold leading-[58px]'>Join the<br /> Adventure</h4>
             <p className='text-[15px] text-white leading-6 pr-7 mt-4'>
-              Create an account and start documenting your travel experiences with TripScribe.
+              Create an account and start documenting your travel experiences with RoamDiary today!
             </p>
           </div>
         </div>

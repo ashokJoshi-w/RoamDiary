@@ -24,8 +24,8 @@ const Navbar = React.memo(({ userInfo, searchQuery, setSearchQuery, onSearchNote
 
   return (
     <div className="bg-white flex flex-col md:flex-row items-center justify-between px-6 py-2 drop-shadow sticky top-0 z-10 transition-all">
-      <h2 className="text-2xl font-bold text-purple-600 tracking-tight py-2">
-        Trip <span className="text-purple-400">Scribe</span>
+      <h2 className="text-2xl font-bold text-black-600 tracking-tight py-2">
+        Roam<span className="text-yellow-600">Diary</span>
       </h2>
 
       {userInfo && (
