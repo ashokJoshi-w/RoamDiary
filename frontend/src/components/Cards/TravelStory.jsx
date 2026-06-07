@@ -1,7 +1,11 @@
-import moment from 'moment'; 
+import moment from 'moment';
 import React from 'react';
 import { FaHeart } from 'react-icons/fa6';
-import { GrMapLocation } from "react-icons/gr"; 
+import { GrMapLocation } from 'react-icons/gr';
+
+const TAG_COLORS = {
+  default: { bg: '#DDEEFF', color: '#0A4A88' },
+};
 
 const TravelStoryCard = React.memo(({
   imgUrl,
@@ -12,44 +16,69 @@ const TravelStoryCard = React.memo(({
   isFavourite,
   onFavouriteClick,
   onClick,
+  onEdit,
 }) => {
+  const locationLabel = Array.isArray(visitedLocation)
+    ? visitedLocation.join(', ')
+    : visitedLocation || '';
+
   return (
-    <div className='border border-slate-200 rounded-lg overflow-hidden bg-white hover:shadow-lg hover:shadow-slate-200 transition-all relative cursor-pointer'>
-      <img
-        src={imgUrl}
-        alt={title}
-        className='w-full h-56 object-cover rounded-lg'
-        onClick={onClick}
-        loading="lazy"
-      />
+    <div className="rd-card" onClick={onClick}>
+      {/* Image */}
+      <div className="rd-card-img-wrap">
+        <img
+          src={imgUrl}
+          alt={title}
+          className="rd-card-img"
+          loading="lazy"
+        />
+        {/* Dark gradient so location pin is always readable */}
+        <div className="rd-card-img-overlay" />
 
-      <button 
-        className='absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-lg border border-white/30 bg-white/40 backdrop-blur-sm z-50'
-        onClick={(e) => {
-          e.stopPropagation(); 
-          onFavouriteClick();
-        }}
-      >
-        
-        <FaHeart className={`icon-btn ${isFavourite ? "text-red-500" : "text-white"}`} />
-      </button>
-
-      <div className='p-4' onClick={onClick}>
-        <div className='flex items-center gap-3'>
-          <div className='flex-1'>
-            <h6 className='text-sm font-medium'>{title}</h6>
-            <span className='text-xs text-slate-400'>
-              {date ? moment(date).format("Do MMM YYYY") : "-"}
-            </span>
+        {/* Location pin badge */}
+        {locationLabel && (
+          <div className="rd-card-pin">
+            <GrMapLocation size={10} />
+            <span>{locationLabel}</span>
           </div>
+        )}
+
+        {/* Favourite button */}
+        <button
+          className={`rd-fav-btn ${isFavourite ? 'rd-fav-btn--on' : ''}`}
+          onClick={(e) => { e.stopPropagation(); onFavouriteClick(); }}
+          aria-label={isFavourite ? 'Remove from favourites' : 'Add to favourites'}
+        >
+          <FaHeart size={13} />
+        </button>
+      </div>
+
+      {/* Body */}
+      <div className="rd-card-body">
+        <div className="rd-card-meta-row">
+          <span className="rd-card-date">
+            {date ? moment(date).format('D MMM YYYY') : '—'}
+          </span>
         </div>
 
-        <p className='text-xs text-slate-600 mt-2'>{story?.slice(0, 60)}...</p>
+        <h3 className="rd-card-title">{title}</h3>
 
-        <div className='inline-flex items-center gap-2 text-[13px] text-purple-600 bg-purple-50 rounded mt-3 px-2 py-1'>
-          <GrMapLocation className="text-sm" />
-          {visitedLocation && Array.isArray(visitedLocation) && visitedLocation.map((item, index) => 
-            visitedLocation.length === index + 1 ? item : `${item}, `
+        <p className="rd-card-excerpt">
+          {story?.slice(0, 80)}{story?.length > 80 ? '…' : ''}
+        </p>
+
+        <div className="rd-card-footer-row">
+          <span className="rd-card-photo-count">
+            <GrMapLocation size={11} style={{ opacity: 0.5 }} />
+            {locationLabel || 'Unknown location'}
+          </span>
+          {onEdit && (
+            <button
+              className="rd-card-edit-btn"
+              onClick={(e) => { e.stopPropagation(); onEdit(); }}
+            >
+              Edit
+            </button>
           )}
         </div>
       </div>

@@ -12,9 +12,7 @@ const Navbar = React.memo(({ userInfo, searchQuery, setSearchQuery, onSearchNote
   };
 
   const handleSearch = () => {
-    if (searchQuery) {
-      onSearchNote(searchQuery);
-    }
+    if (searchQuery) onSearchNote(searchQuery);
   };
 
   const onClearSearch = () => {
@@ -23,20 +21,23 @@ const Navbar = React.memo(({ userInfo, searchQuery, setSearchQuery, onSearchNote
   };
 
   return (
-    <div className="bg-white flex flex-col md:flex-row items-center justify-between px-6 py-2 drop-shadow sticky top-0 z-10 transition-all">
-      <h2 className="text-2xl font-bold text-black-600 tracking-tight py-2">
-        Roam<span className="text-yellow-600">Diary</span>
+    <div className="rd-navbar">
+      {/* Logo */}
+      <h2 className="rd-logo">
+        Roam<em>Diary</em>
       </h2>
 
+      {/* Search + Profile */}
       {userInfo && (
-        <div className="flex-1 flex items-center justify-between md:justify-end gap-3 w-full md:w-auto mt-2 md:mt-0">
-          <SearchBar
-            value={searchQuery}
-            onChange={({ target }) => setSearchQuery(target.value)}
-            handleSearch={handleSearch}
-            onClearSearch={onClearSearch}
-          />
-
+        <div className="rd-navbar-right">
+          <div className="rd-search-wrap">
+            <SearchBar
+              value={searchQuery}
+              onChange={({ target }) => setSearchQuery(target.value)}
+              handleSearch={handleSearch}
+              onClearSearch={onClearSearch}
+            />
+          </div>
           <ProfileInfo userInfo={userInfo} onLogout={onLogout} />
         </div>
       )}
