@@ -6,6 +6,7 @@ const Home = lazy(() => import('./pages/Home/Home'));
 const Login = lazy(() => import('./pages/Auth/Login'));
 const SignUp = lazy(() => import('./pages/Auth/SignUp'));
 
+
 const App = () => {
   return (
     <div>

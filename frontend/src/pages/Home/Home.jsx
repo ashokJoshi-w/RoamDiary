@@ -7,14 +7,14 @@ import Modal from 'react-modal';
 import TravelStoryCard from '../../components/Cards/TravelStory.jsx';
 import EmptyCard from '../../components/Cards/EmptyCard.jsx';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'
+import 'react-toastify/dist/ReactToastify.css';
 import AddEditTravelStory from './AddEditTravelStory.jsx';
 import ViewTravelStory from './ViewTravelStory.jsx';
 import { DayPicker } from 'react-day-picker';
 import FilterInfoTitle from '../../components/Cards/FilterInfoTitle.jsx';
 
-import NoStoryImg from "../../assets/images/no-story.png";
-import NoSearchImg from "../../assets/images/no-search.png";
+import NoStoryImg from '../../assets/images/no-story.png';
+import NoSearchImg from '../../assets/images/no-search.png';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -25,13 +25,13 @@ const Home = () => {
   const [dateRange, setDateRange] = useState({ from: null, to: null });
   const [loading, setLoading] = useState(false);
 
-  const [openAddEditModel, setOpenAddEditModel] = useState({ isShown: false, type: "add", data: null });
+  const [openAddEditModel, setOpenAddEditModel] = useState({ isShown: false, type: 'add', data: null });
   const [openViewModal, setOpenViewModal] = useState({ isShown: false, data: null });
 
   const getUserInfo = useCallback(async () => {
     try {
       const response = await axiosInstance.get('/get-user');
-      if (response.data && response.data.user) setUserInfo(response.data.user);
+      if (response.data?.user) setUserInfo(response.data.user);
     } catch (error) {
       if (error.response?.status === 401) {
         localStorage.clear();
@@ -46,7 +46,7 @@ const Home = () => {
       const response = await axiosInstance.get('/get-all-stories');
       if (response.data?.stories) setAllStories(response.data.stories);
     } catch (error) {
-      console.log("Unexpected error occurred.");
+      console.log('Unexpected error occurred.');
     } finally {
       setLoading(false);
     }
@@ -55,79 +55,87 @@ const Home = () => {
   const onSearchStory = useCallback(async (query) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("/search", { params: { query } });
+      const response = await axiosInstance.get('/search', { params: { query } });
       if (response.data?.stories) {
-        setFilterType("search");
+        setFilterType('search');
         setAllStories(response.data.stories);
       }
-    } catch (error) { console.error(error); } finally { setLoading(false); }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const filterStoriesByDate = useCallback(async (day) => {
     if (!day?.from || !day?.to) return;
     setLoading(true);
     try {
-      const response = await axiosInstance.get("/travel-stories/filter", {
+      const response = await axiosInstance.get('/travel-stories/filter', {
         params: { startDate: day.from.getTime(), endDate: day.to.getTime() },
       });
       if (response.data?.stories) {
-        setFilterType("date");
+        setFilterType('date');
         setAllStories(response.data.stories);
       }
-    } catch (error) { console.error(error); } finally { setLoading(false); }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const refreshData = useCallback(() => {
-    if (filterType === "search" && searchQuery) onSearchStory(searchQuery);
-    else if (filterType === "date") filterStoriesByDate(dateRange);
+    if (filterType === 'search' && searchQuery) onSearchStory(searchQuery);
+    else if (filterType === 'date') filterStoriesByDate(dateRange);
     else getAllTravelStories();
   }, [filterType, searchQuery, dateRange, onSearchStory, filterStoriesByDate, getAllTravelStories]);
 
   const handleClearSearch = useCallback(() => {
-    setFilterType("");
-    setSearchQuery("");
+    setFilterType('');
+    setSearchQuery('');
     setDateRange({ from: null, to: null });
     getAllTravelStories();
   }, [getAllTravelStories]);
 
   const handleAddStory = useCallback(async (storyData) => {
     try {
-      const response = await axiosInstance.post("/add-travel-story", storyData);
+      const response = await axiosInstance.post('/add-travel-story', storyData);
       if (response.data && !response.data.error) {
-        toast.success("Story added successfully");
+        toast.success('Story added successfully');
         handleClearSearch();
-        setOpenAddEditModel({ isShown: false, type: "add", data: null });
+        setOpenAddEditModel({ isShown: false, type: 'add', data: null });
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Something went wrong");
+      toast.error(error.response?.data?.message || 'Something went wrong');
     }
   }, [handleClearSearch]);
 
   const handleUpdateStory = useCallback(async (storyId, storyData) => {
     try {
-      const response = await axiosInstance.put("/edit-travel-story/" + storyId, storyData);
+      const response = await axiosInstance.put('/edit-travel-story/' + storyId, storyData);
       if (response.data && !response.data.error) {
-        toast.success("Story updated successfully");
+        toast.success('Story updated successfully');
         refreshData();
-        setOpenAddEditModel({ isShown: false, type: "add", data: null });
+        setOpenAddEditModel({ isShown: false, type: 'add', data: null });
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Update failed");
+      toast.error(error.response?.data?.message || 'Update failed');
     }
   }, [refreshData]);
 
   const handleDeleteStory = useCallback(async (data) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.delete("/delete-travel-story/" + data._id);
+      const response = await axiosInstance.delete('/delete-travel-story/' + data._id);
       if (response.data && !response.data.error) {
-        toast.success("Story deleted successfully");
+        toast.success('Story deleted successfully');
         refreshData();
         setOpenViewModal({ isShown: false, data: null });
-        setOpenAddEditModel({ isShown: false, type: "add", data: null });
+        setOpenAddEditModel({ isShown: false, type: 'add', data: null });
       }
     } catch (error) {
-      toast.error("Delete failed");
+      toast.error('Delete failed');
     } finally {
       setLoading(false);
     }
@@ -139,11 +147,11 @@ const Home = () => {
         isFavourite: !storyData.isFavourite,
       });
       if (response.data) {
-        toast.success("Updated!");
+        toast.success('Updated!');
         refreshData();
       }
     } catch (error) {
-      toast.error("An error occurred");
+      toast.error('An error occurred');
     }
   }, [refreshData]);
 
@@ -157,22 +165,86 @@ const Home = () => {
     getAllTravelStories();
   }, []);
 
+  const firstName = userInfo?.fullName?.split(' ')[0] || 'Traveller';
+
   return (
-    <>
-      <Navbar userInfo={userInfo} searchQuery={searchQuery} setSearchQuery={setSearchQuery} onSearchNote={onSearchStory} handleClearSearch={handleClearSearch} />
+    <div className="rd-page">
+      <Navbar
+        userInfo={userInfo}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onSearchNote={onSearchStory}
+        handleClearSearch={handleClearSearch}
+      />
 
-      <div className='container mx-auto py-10 px-6'>
-        <FilterInfoTitle filterType={filterType} filterDates={dateRange} onClear={handleClearSearch} />
+      {/* Hero Banner */}
+      <div className="rd-hero">
+        <div className="rd-hero-rings">
+          <div className="rd-hero-ring rd-hero-ring--lg" />
+          <div className="rd-hero-ring rd-hero-ring--sm" />
+        </div>
+        <div className="rd-hero-content">
+          <div>
+            <p className="rd-hero-eyebrow">Your travel journal</p>
+            <h1 className="rd-hero-title">
+              Every journey<br />tells a <em>story.</em>
+            </h1>
+            <p className="rd-hero-sub">
+              Document the places, moments &amp; memories that matter.
+            </p>
+            <div className="rd-hero-stats">
+              <div className="rd-hero-stat">
+                <span className="rd-hero-stat-num">{allStories.length}</span>
+                <span className="rd-hero-stat-lbl">Stories</span>
+              </div>
+              <div className="rd-hero-stat">
+                <span className="rd-hero-stat-num">
+                  {[...new Set(allStories.flatMap(s => s.visitedLocations || []))].length}
+                </span>
+                <span className="rd-hero-stat-lbl">Places</span>
+              </div>
+              <div className="rd-hero-stat">
+                <span className="rd-hero-stat-num">
+                  {allStories.filter(s => s.isFavourite).length}
+                </span>
+                <span className="rd-hero-stat-lbl">Saved</span>
+              </div>
+            </div>
+          </div>
+          <button
+            className="rd-new-btn"
+            onClick={() => setOpenAddEditModel({ isShown: true, type: 'add', data: null })}
+          >
+            <MdAdd size={18} />
+            New story
+          </button>
+        </div>
+      </div>
 
-        <div className='flex flex-col-reverse lg:flex-row gap-7'>
-          <div className='flex-1'>
+      {/* Main body */}
+      <div className="rd-body">
+
+        {/* Filter info */}
+        {filterType && (
+          <div className="rd-filter-bar">
+            <FilterInfoTitle
+              filterType={filterType}
+              filterDates={dateRange}
+              onClear={handleClearSearch}
+            />
+          </div>
+        )}
+
+        <div className="rd-layout">
+          {/* Stories grid */}
+          <div className="rd-stories-col">
             {loading ? (
-              <div className="flex flex-col items-center justify-center py-20">
-                <div className="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
-                <p className="mt-4 text-slate-500 font-medium">Processing...</p>
+              <div className="rd-loading">
+                <div className="rd-spinner" />
+                <p className="rd-loading-text">Loading your stories…</p>
               </div>
             ) : allStories.length > 0 ? (
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <div className="rd-grid">
                 {allStories.map((item) => (
                   <TravelStoryCard
                     key={item._id}
@@ -182,39 +254,122 @@ const Home = () => {
                     date={item.visitedDate}
                     visitedLocation={item.visitedLocations}
                     isFavourite={item.isFavourite}
-                    onEdit={() => setOpenAddEditModel({ isShown: true, type: "edit", data: item })}
+                    onEdit={() => setOpenAddEditModel({ isShown: true, type: 'edit', data: item })}
                     onClick={() => setOpenViewModal({ isShown: true, data: item })}
                     onFavouriteClick={() => updateIsFavourite(item)}
                   />
                 ))}
               </div>
             ) : (
-              <EmptyCard imgSrc={filterType ? NoSearchImg : NoStoryImg} message={filterType ? `Oops! No stories found.` : `Start creating your first Travel Story!`} />
+              <EmptyCard
+                imgSrc={filterType ? NoSearchImg : NoStoryImg}
+                message={
+                  filterType
+                    ? 'No stories found for this filter.'
+                    : 'Start creating your first Travel Story!'
+                }
+              />
             )}
           </div>
 
-          <div className='w-full lg:w-[320px]'>
-            <div className='bg-white border border-slate-200 rounded-lg shadow-lg p-4'>
-              <DayPicker mode="range" selected={dateRange} onSelect={handleDayClick} pagedNavigation />
+          {/* Sidebar */}
+          <div className="rd-sidebar">
+
+            {/* Calendar */}
+            <div className="rd-widget">
+              <p className="rd-widget-label">Filter by date</p>
+              <DayPicker
+                mode="range"
+                selected={dateRange}
+                onSelect={handleDayClick}
+                pagedNavigation
+                className="rd-daypicker"
+              />
             </div>
+
+            {/* Quick destinations */}
+            {allStories.length > 0 && (
+              <div className="rd-widget">
+                <p className="rd-widget-label">Destinations</p>
+                {[...new Set(allStories.flatMap(s => s.visitedLocations || []))]
+                  .slice(0, 5)
+                  .map((place, i) => {
+                    const count = allStories.filter(s =>
+                      s.visitedLocations?.includes(place)
+                    ).length;
+                    const max = Math.max(
+                      ...([...new Set(allStories.flatMap(s => s.visitedLocations || []))]
+                        .map(p => allStories.filter(s => s.visitedLocations?.includes(p)).length))
+                    );
+                    return (
+                      <div key={i} className="rd-dest-row">
+                        <div className="rd-dest-icon">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1A5A9A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div className="rd-dest-name">{place}</div>
+                          <div className="rd-dest-bar-wrap">
+                            <div className="rd-dest-bar" style={{ width: `${(count / max) * 100}%` }} />
+                          </div>
+                        </div>
+                        <span className="rd-dest-count">{count} {count === 1 ? 'story' : 'stories'}</span>
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      <Modal isOpen={openAddEditModel.isShown} onRequestClose={() => !loading && setOpenAddEditModel({ isShown: false, type: 'add', data: null })} style={{ overlay: { backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 999 } }} appElement={document.getElementById('root')} className='model-box scrollbar'>
-        <AddEditTravelStory type={openAddEditModel.type} storyInfo={openAddEditModel.data} onClose={() => setOpenAddEditModel({ isShown: false, type: 'add', data: null })} onAddStory={handleAddStory} onUpdateStory={handleUpdateStory} onDeleteStory={handleDeleteStory} />
+      {/* Modals */}
+      <Modal
+        isOpen={openAddEditModel.isShown}
+        onRequestClose={() => !loading && setOpenAddEditModel({ isShown: false, type: 'add', data: null })}
+        style={{ overlay: { backgroundColor: 'rgba(10,16,30,0.55)', zIndex: 999 } }}
+        appElement={document.getElementById('root')}
+        className="model-box scrollbar"
+      >
+        <AddEditTravelStory
+          type={openAddEditModel.type}
+          storyInfo={openAddEditModel.data}
+          onClose={() => setOpenAddEditModel({ isShown: false, type: 'add', data: null })}
+          onAddStory={handleAddStory}
+          onUpdateStory={handleUpdateStory}
+          onDeleteStory={handleDeleteStory}
+        />
       </Modal>
 
-      <Modal isOpen={openViewModal.isShown} onRequestClose={() => !loading && setOpenViewModal({ isShown: false, data: null })} style={{ overlay: { backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 999 } }} appElement={document.getElementById('root')} className='model-box scrollbar'>
-        <ViewTravelStory storyInfo={openViewModal.data || null} onClose={() => setOpenViewModal({ isShown: false, data: null })} onEditClick={() => { const d = openViewModal.data; setOpenViewModal({ isShown: false, data: null }); setOpenAddEditModel({ isShown: true, type: "edit", data: d }); }} onDeleteClick={() => handleDeleteStory(openViewModal.data)} />
+      <Modal
+        isOpen={openViewModal.isShown}
+        onRequestClose={() => !loading && setOpenViewModal({ isShown: false, data: null })}
+        style={{ overlay: { backgroundColor: 'rgba(10,16,30,0.55)', zIndex: 999 } }}
+        appElement={document.getElementById('root')}
+        className="model-box scrollbar"
+      >
+        <ViewTravelStory
+          storyInfo={openViewModal.data || null}
+          onClose={() => setOpenViewModal({ isShown: false, data: null })}
+          onEditClick={() => {
+            const d = openViewModal.data;
+            setOpenViewModal({ isShown: false, data: null });
+            setOpenAddEditModel({ isShown: true, type: 'edit', data: d });
+          }}
+          onDeleteClick={() => handleDeleteStory(openViewModal.data)}
+        />
       </Modal>
 
-      <button className='w-16 h-16 flex items-center justify-center rounded-full bg-violet-500 hover:bg-violet-600 fixed right-10 bottom-10 shadow-2xl z-50 transition-all' onClick={() => setOpenAddEditModel({ isShown: true, type: "add", data: null })}>
-        <MdAdd className='text-[32px] text-white' />
+      {/* FAB */}
+      <button
+        className="rd-fab"
+        onClick={() => setOpenAddEditModel({ isShown: true, type: 'add', data: null })}
+        aria-label="Add new story"
+      >
+        <MdAdd size={28} />
       </button>
 
       <ToastContainer position="bottom-right" autoClose={2000} theme="colored" />
-    </>
+    </div>
   );
 };
 

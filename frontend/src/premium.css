@@ -1,0 +1,560 @@
+/* ============================================================
+   ROAMDIARY — PREMIUM UI STYLES
+   Add this to your style.css (or import into App.css)
+   Fonts loaded via index.html or index.css:
+   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500&display=swap');
+   ============================================================ */
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: #E8EDF5;
+  color: #1A2235;
+  margin: 0;
+}
+
+/* ---------- Page wrapper ---------- */
+.rd-page {
+  min-height: 100vh;
+  background: #E8EDF5;
+}
+
+/* ---------- Navbar ---------- */
+.rd-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 64px;
+  background: #FFFFFF;
+  border-bottom: 1.5px solid #D0D8E8;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.rd-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: #1A2235;
+  letter-spacing: -0.3px;
+  font-style: normal;
+  margin: 0;
+}
+
+.rd-logo em {
+  font-style: italic;
+  color: #2E7DBA;
+}
+
+.rd-navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rd-search-wrap {
+  /* wrapper around your existing SearchBar so it picks up new bg */
+}
+
+.rd-search-wrap input,
+.rd-search-wrap .search-input {
+  background: #EEF2F8 !important;
+  border: 1.5px solid #C8D3E5 !important;
+  border-radius: 24px !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 13px !important;
+  color: #1A2235 !important;
+}
+
+/* ---------- Hero ---------- */
+.rd-hero {
+  background: #1A2235;
+  padding: 2rem 2rem 1.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.rd-hero-rings {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.rd-hero-ring {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+}
+
+.rd-hero-ring--lg {
+  width: 340px;
+  height: 340px;
+  top: -100px;
+  right: -80px;
+}
+
+.rd-hero-ring--sm {
+  width: 180px;
+  height: 180px;
+  top: 10px;
+  right: 190px;
+}
+
+.rd-hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.rd-hero-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: #4E8EC0;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.rd-hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.rd-hero-title em {
+  font-style: italic;
+  color: #7EC8F5;
+}
+
+.rd-hero-sub {
+  font-size: 13px;
+  color: #7A8EA8;
+  margin: 8px 0 0;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.rd-hero-stats {
+  display: flex;
+  gap: 2.25rem;
+  margin-top: 1.5rem;
+}
+
+.rd-hero-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.rd-hero-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 1;
+}
+
+.rd-hero-stat-lbl {
+  font-size: 10px;
+  color: #4E6A88;
+  margin-top: 4px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.rd-new-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #2E7DBA;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.rd-new-btn:hover {
+  background: #2268A0;
+}
+
+/* ---------- Body layout ---------- */
+.rd-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+}
+
+.rd-filter-bar {
+  margin-bottom: 1rem;
+}
+
+.rd-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .rd-layout {
+    grid-template-columns: 1fr;
+  }
+  .rd-sidebar {
+    order: -1;
+  }
+  .rd-hero-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+/* ---------- Stories grid ---------- */
+.rd-stories-col {}
+
+.rd-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .rd-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- Travel Story Card ---------- */
+.rd-card {
+  border-radius: 18px;
+  overflow: hidden;
+  background: #FFFFFF;
+  border: 1.5px solid #C8D3E2;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.rd-card:hover {
+  transform: translateY(-3px);
+}
+
+.rd-card-img-wrap {
+  position: relative;
+  height: 190px;
+  overflow: hidden;
+}
+
+.rd-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.rd-card-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,16,30,0.72) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.rd-card-pin {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(15, 22, 40, 0.78);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 10px;
+  letter-spacing: 0.05em;
+  max-width: calc(100% - 56px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rd-fav-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  transition: background 0.15s, border-color 0.15s;
+  z-index: 10;
+}
+
+.rd-fav-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.rd-fav-btn--on {
+  background: rgba(239, 68, 68, 0.22);
+  border-color: rgba(239, 68, 68, 0.55);
+  color: #EF4444;
+}
+
+/* Card body */
+.rd-card-body {
+  padding: 14px 16px 15px;
+  border-top: 1.5px solid #E4EAF4;
+}
+
+.rd-card-meta-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.rd-card-date {
+  font-size: 11px;
+  color: #8896AE;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rd-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  font-weight: 600;
+  color: #0F1828;
+  margin: 0 0 6px;
+  line-height: 1.2;
+}
+
+.rd-card-excerpt {
+  font-size: 12.5px;
+  color: #4A5870;
+  line-height: 1.65;
+  font-weight: 300;
+  margin: 0 0 10px;
+}
+
+.rd-card-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid #E4EAF4;
+}
+
+.rd-card-photo-count {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #7A8AA2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 75%;
+}
+
+.rd-card-edit-btn {
+  font-size: 11px;
+  font-weight: 500;
+  color: #2E7DBA;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+  flex-shrink: 0;
+}
+
+.rd-card-edit-btn:hover {
+  color: #1A5A9A;
+}
+
+/* ---------- Sidebar ---------- */
+.rd-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rd-widget {
+  background: #FFFFFF;
+  border: 1.5px solid #C8D3E2;
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+
+.rd-widget-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8896AE;
+  margin: 0 0 12px;
+}
+
+/* DayPicker overrides — keep it clean */
+.rd-daypicker {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 13px;
+  width: 100%;
+}
+
+.rd-daypicker .rdp-caption_label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #0F1828;
+}
+
+.rd-daypicker .rdp-day_selected:not(.rdp-day_disabled) {
+  background-color: #2E7DBA !important;
+  color: white !important;
+}
+
+.rd-daypicker .rdp-day_today {
+  background: #1A2235;
+  color: white !important;
+  border-radius: 50%;
+}
+
+.rd-daypicker .rdp-day:hover:not(.rdp-day_disabled):not(.rdp-day_selected) {
+  background: #EEF2F8;
+}
+
+/* ---------- Destinations widget ---------- */
+.rd-dest-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid #E8EDF5;
+}
+
+.rd-dest-row:last-child {
+  border-bottom: none;
+}
+
+.rd-dest-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: #DDEEFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rd-dest-name {
+  font-size: 13px;
+  color: #0F1828;
+  font-weight: 400;
+  margin-bottom: 3px;
+}
+
+.rd-dest-bar-wrap {
+  width: 100%;
+  height: 3px;
+  background: #D8E2F0;
+  border-radius: 2px;
+}
+
+.rd-dest-bar {
+  height: 3px;
+  background: #2E7DBA;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.rd-dest-count {
+  font-size: 11px;
+  color: #8896AE;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ---------- Loading state ---------- */
+.rd-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 0;
+}
+
+.rd-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #D0D8E8;
+  border-top-color: #2E7DBA;
+  border-radius: 50%;
+  animation: rd-spin 0.7s linear infinite;
+}
+
+@keyframes rd-spin {
+  to { transform: rotate(360deg); }
+}
+
+.rd-loading-text {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #8896AE;
+  font-weight: 300;
+}
+
+/* ---------- FAB ---------- */
+.rd-fab {
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #2E7DBA;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  z-index: 50;
+  box-shadow: 0 4px 16px rgba(46, 125, 186, 0.38);
+  transition: background 0.15s, transform 0.15s;
+}
+
+.rd-fab:hover {
+  background: #2268A0;
+  transform: scale(1.06);
+}
+
+/* ---------- Font import (add to your index.html <head> or top of index.css) ---------- */
+/* 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+*/
