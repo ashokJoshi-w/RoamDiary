@@ -232,7 +232,7 @@ body {
 .rd-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 @media (max-width: 600px) {
@@ -418,33 +418,129 @@ body {
 }
 
 /* DayPicker overrides — keep it clean */
+/* ── react-day-picker v10 overrides ── */
 .rd-daypicker {
   font-family: 'Outfit', sans-serif !important;
-  font-size: 13px;
-  width: 100%;
+  font-size: 13px !important;
+  width: 100% !important;
+  --rdp-accent-color: #2E7DBA;
+  --rdp-accent-background-color: #EEF2F8;
 }
 
-.rd-daypicker .rdp-caption_label {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 17px;
-  font-weight: 600;
-  color: #0F1828;
+/* Make the whole picker fill the widget width */
+.rd-daypicker > div,
+.rd-daypicker [class*="months"],
+.rd-daypicker [class*="month"] {
+  width: 100% !important;
 }
 
-.rd-daypicker .rdp-day_selected:not(.rdp-day_disabled) {
-  background-color: #2E7DBA !important;
-  color: white !important;
+/* Month grid fills available width, columns share space equally */
+.rd-daypicker table,
+.rd-daypicker [class*="month_grid"] {
+  width: 100% !important;
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
 }
 
-.rd-daypicker .rdp-day_today {
-  background: #1A2235;
-  color: white !important;
-  border-radius: 50%;
+/* Day header cells */
+.rd-daypicker [class*="weekday"],
+.rd-daypicker th {
+  width: calc(100% / 7) !important;
+  text-align: center !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  color: #8896AE !important;
+  padding: 4px 0 8px !important;
 }
 
-.rd-daypicker .rdp-day:hover:not(.rdp-day_disabled):not(.rdp-day_selected) {
-  background: #EEF2F8;
+/* Day cells */
+.rd-daypicker [class*="week"] td,
+.rd-daypicker td {
+  width: calc(100% / 7) !important;
+  text-align: center !important;
+  padding: 2px 0 !important;
 }
+
+/* Day buttons */
+.rd-daypicker [class*="day_button"],
+.rd-daypicker button[class*="day"] {
+  width: 32px !important;
+  height: 32px !important;
+  max-width: 32px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  font-family: 'Outfit', sans-serif !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  background: transparent !important;
+  color: #1A2235 !important;
+  cursor: pointer !important;
+}
+
+.rd-daypicker [class*="day_button"]:hover {
+  background: #EEF2F8 !important;
+}
+
+/* Selected day */
+.rd-daypicker [class*="selected"] [class*="day_button"],
+.rd-daypicker [class*="day_button"][class*="selected"] {
+  background: #2E7DBA !important;
+  color: #fff !important;
+}
+
+/* Today */
+.rd-daypicker [class*="today"] [class*="day_button"],
+.rd-daypicker [class*="day_button"][class*="today"] {
+  background: #1A2235 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+/* Outside days */
+.rd-daypicker [class*="outside"] [class*="day_button"] {
+  color: #C8D3E2 !important;
+}
+
+/* Caption / month title */
+.rd-daypicker [class*="month_caption"],
+.rd-daypicker [class*="caption"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 10px !important;
+}
+
+.rd-daypicker [class*="caption_label"] {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  color: #0F1828 !important;
+}
+
+/* Nav buttons */
+.rd-daypicker [class*="button_previous"],
+.rd-daypicker [class*="button_next"],
+.rd-daypicker [class*="nav"] button {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 8px !important;
+  border: 1.5px solid #C8D3E2 !important;
+  background: #fff !important;
+  color: #2E7DBA !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+
+.rd-daypicker [class*="button_previous"]:hover,
+.rd-daypicker [class*="button_next"]:hover {
+  background: #EEF2F8 !important;
+}
+
 
 /* ---------- Destinations widget ---------- */
 .rd-dest-row {

@@ -16,6 +16,8 @@ import FilterInfoTitle from '../../components/Cards/FilterInfoTitle.jsx';
 import NoStoryImg from '../../assets/images/no-story.png';
 import NoSearchImg from '../../assets/images/no-search.png';
 
+
+
 const Home = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);

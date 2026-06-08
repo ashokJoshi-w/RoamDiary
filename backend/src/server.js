@@ -265,6 +265,49 @@ app.get("/travel-stories/filter", authenticateToken, async (req, res) => {
     } catch (err) { res.status(500).json({ message: "Filter error" }); }
 });
 
+// Destinations route
+
+app.get("/get-destinations", authenticateToken, async (req, res) => {
+  try {
+    const stories = await TravelStory.find(
+      { userId: req.user.userId },
+      { visitedLocations: 1, title: 1, imageUrl: 1, visitedDate: 1 }
+    );
+
+    // Build a map: location name → { count, stories[] }
+    const destMap = {};
+
+    stories.forEach((story) => {
+      const locations = Array.isArray(story.visitedLocations)
+        ? story.visitedLocations
+        : [];
+
+      locations.forEach((loc) => {
+        const name = (loc || "").trim();
+        if (!name) return;
+
+        if (!destMap[name]) {
+          destMap[name] = { name, count: 0, stories: [] };
+        }
+        destMap[name].count += 1;
+        destMap[name].stories.push({
+          id: story._id,
+          title: story.title,
+          imageUrl: story.imageUrl,
+          visitedDate: story.visitedDate,
+        });
+      });
+    });
+
+    const destinations = Object.values(destMap).sort((a, b) => b.count - a.count);
+
+    res.status(200).json({ error: false, destinations });
+  } catch (err) {
+    console.error("Destinations error:", err);
+    res.status(500).json({ error: true, message: "Failed to fetch destinations" });
+  }
+});
+
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
