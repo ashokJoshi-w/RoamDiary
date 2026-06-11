@@ -4,7 +4,8 @@
 
 ### ✈️ Capture Every Journey. Relive Every Memory.
 
-A beautiful full-stack travel journaling platform where users can document adventures, upload photos, save locations, and create a personal collection of unforgettable travel stories.
+RoamDiary is a modern full-stack travel journaling platform that helps travelers capture, organize, and relive their adventures. From breathtaking destinations and memorable experiences to cherished photographs, every journey is preserved in one beautiful digital diary.
+
 
 ![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge\&logo=react)
 ![Node.js](https://img.shields.io/badge/Node.js-Backend-green?style=for-the-badge\&logo=node.js)
@@ -75,7 +76,6 @@ A beautiful full-stack travel journaling platform where users can document adven
 
 <p align="center">
 
-### Add Login Page Screenshot Here
 <img width="1919" height="868" alt="Screenshot 2026-06-11 130932" src="https://github.com/user-attachments/assets/84f897c6-4e89-4a0c-9b07-58a41bf66e3e" />
 
 
@@ -89,9 +89,8 @@ A beautiful full-stack travel journaling platform where users can document adven
 
 <p align="center">
 
-### Add Sign Up Page Screenshot Here
+<img width="1915" height="867" alt="Screenshot 2026-06-11 130916" src="https://github.com/user-attachments/assets/c6c2ba01-15c1-4bdb-91d2-8d0c514ceafe" />
 
-<img src="YOUR_SIGNUP_SCREENSHOT_URL" width="900"/>
 
 </p>
 
@@ -101,9 +100,9 @@ A beautiful full-stack travel journaling platform where users can document adven
 
 <p align="center">
 
-### Add Dashboard Screenshot Here
+<img width="1899" height="868" alt="Screenshot 2026-06-11 133543" src="https://github.com/user-attachments/assets/fafc0ab6-ed99-4779-8c86-b993bb0e0762" />
+<img width="1897" height="862" alt="Screenshot 2026-06-11 133608" src="https://github.com/user-attachments/assets/54fa2d51-07a1-4936-bcc4-867bd65e4e29" />
 
-<img src="YOUR_DASHBOARD_SCREENSHOT_URL" width="900"/>
 
 </p>
 
@@ -119,27 +118,13 @@ A beautiful full-stack travel journaling platform where users can document adven
 
 </p>
 
----
-
-## 🗺️ Travel Story Feed
-
-<p align="center">
-
-### Add Story Feed Screenshot Here
-
-<img src="YOUR_FEED_SCREENSHOT_URL" width="900"/>
-
-</p>
-
----
 
 ## ℹ️ About Us
 
 <p align="center">
 
-### Add About Us Screenshot Here
+<img width="1900" height="867" alt="Screenshot 2026-06-11 133639" src="https://github.com/user-attachments/assets/059f4b81-1cfa-4491-b566-d6a95c2421f5" />
 
-<img src="YOUR_ABOUT_SCREENSHOT_URL" width="900"/>
 
 </p>
 
@@ -150,47 +135,27 @@ A beautiful full-stack travel journaling platform where users can document adven
 ```bash
 RoamDiary
 │
-├── frontend
-│   ├── src
-│   ├── components
-│   ├── pages
-│   └── assets
-│
 ├── backend
-│   ├── routes
-│   ├── models
-│   ├── middleware
-│   └── uploads
+│   ├── .env
+│   ├── multer.js
+│   ├── package.json
+│   └── src
+│
+├── frontend
+│   ├── public
+│   ├── src
+│   │   ├── assets
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── utils
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   ├── package.json
+│   └── vite.config.js
 │
 └── README.md
 ```
-
----
-
-# ⚙️ Installation
-
-### Clone Repository
-
-```bash
-git clone https://github.com/your-username/roamdiary.git
-```
-
-### Frontend Setup
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### Backend Setup
-
-```bash
-cd backend
-npm install
-npm start
-```
-
 ---
 
 # 🌟 Future Improvements
