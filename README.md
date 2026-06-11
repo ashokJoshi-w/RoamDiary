@@ -76,6 +76,8 @@ A beautiful full-stack travel journaling platform where users can document adven
 <p align="center">
 
 ### Add Login Page Screenshot Here
+<img width="1919" height="868" alt="Screenshot 2026-06-11 130932" src="https://github.com/user-attachments/assets/84f897c6-4e89-4a0c-9b07-58a41bf66e3e" />
+
 
 <img src=".frontend\src\assets\images\dashboard.png" width="900"/>
 
