@@ -1,180 +1,163 @@
-<div align="center">
-
 # 🌍 RoamDiary
 
-### Capture Every Journey. Preserve Every Memory.
+<div align="center">
 
-A modern full-stack travel journaling platform built with the MERN stack where travelers can document adventures, upload photos, save locations, and relive memories through an elegant dashboard.
+### ✈️ Capture Every Journey. Relive Every Memory.
 
-<br>
+A beautiful full-stack travel journaling platform where users can document adventures, upload photos, save locations, and create a personal collection of unforgettable travel stories.
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge\&logo=react)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge\&logo=node.js)
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge\&logo=mongodb)
-![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge\&logo=express)
-![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge\&logo=jsonwebtokens)
+![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge\&logo=react)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-green?style=for-the-badge\&logo=node.js)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-darkgreen?style=for-the-badge\&logo=mongodb)
+![Express](https://img.shields.io/badge/Express.js-API-black?style=for-the-badge\&logo=express)
+![JWT](https://img.shields.io/badge/JWT-Authentication-orange?style=for-the-badge)
 
 </div>
 
 ---
 
-## ✨ About The Project
+## ✨ Features
 
-RoamDiary is a full-stack travel diary application that helps users record and organize their travel experiences in one place.
+### 🔐 Secure Authentication
 
-From breathtaking destinations to unforgettable moments, RoamDiary transforms travel memories into a beautiful digital journal with image uploads, location tracking, story management, and calendar-based organization.
+* User Registration
+* User Login
+* JWT Authentication
+* Protected Routes
 
----
+### 📖 Travel Story Management
 
-## 🚀 Live Features
-
-<table>
-<tr>
-<td width="50%">
-
-### 📝 Story Management
-
-* Create travel stories
-* Update memories
-* Delete entries
-* Organized dashboard
-
-</td>
-
-<td width="50%">
+* Create Travel Stories
+* Edit Existing Stories
+* Delete Stories
+* View Personal Travel Collection
 
 ### 📸 Media Uploads
 
-* Upload travel images
-* Story cover photos
-* Rich visual experience
+* Upload Travel Images
+* Image Preview Support
+* Organized Media Storage
 
-</td>
-</tr>
+### 📍 Location Tracking
 
-<tr>
-<td>
+* Save Travel Destinations
+* Associate Locations with Stories
+* Easy Travel Organization
 
-### 🔍 Smart Search
+### 🔎 Search & Filter
 
-* Instant story search
-* Quick filtering
-* Better navigation
+* Search Travel Stories
+* Quick Access to Memories
+* Efficient Story Management
 
-</td>
+### 📱 Responsive Design
 
-<td>
-
-### 📅 Calendar View
-
-* Timeline organization
-* Date filtering
-* Travel history tracking
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-### ❤️ Favorites
-
-* Save important memories
-* Quick access section
-
-</td>
-
-<td>
-
-### 🔐 Authentication
-
-* JWT Security
-* Protected routes
-* Secure user accounts
-
-</td>
-</tr>
-</table>
+* Desktop Friendly
+* Tablet Friendly
+* Mobile Responsive
 
 ---
 
-# 📸 Application Preview
+# 🚀 Tech Stack
 
-## Dashboard
+| Frontend | Backend    | Database | Authentication |
+| -------- | ---------- | -------- | -------------- |
+| React.js | Node.js    | MongoDB  | JWT            |
+| Vite     | Express.js | Mongoose | bcrypt         |
+
+---
+
+# 🖼️ Project Screenshots
+
+---
+
+## 🔐 Login Page
 
 <p align="center">
-<img src="./screenshots/dashboard.png" width="100%">
+
+### Add Login Page Screenshot Here
+
+<img src=".frontend\src\assets\images\dashboard.png" width="900"/>
+
 </p>
 
-### Key Dashboard Highlights
+---
 
-✨ Travel Statistics
+## 📝 Sign Up Page
 
-✨ Story Cards
+<p align="center">
 
-✨ Search Functionality
+### Add Sign Up Page Screenshot Here
 
-✨ Calendar Filtering
+<img src="YOUR_SIGNUP_SCREENSHOT_URL" width="900"/>
 
-✨ Favorite Stories
-
-✨ Quick Story Creation
+</p>
 
 ---
 
-# 🛠️ Tech Stack
+## 📊 Dashboard
 
-## Frontend
+<p align="center">
 
-```text
-React.js
-Vite
-Axios
-React Router
-CSS3
-```
+### Add Dashboard Screenshot Here
 
-## Backend
+<img src="YOUR_DASHBOARD_SCREENSHOT_URL" width="900"/>
 
-```text
-Node.js
-Express.js
-REST APIs
-```
-
-## Database
-
-```text
-MongoDB
-Mongoose
-```
-
-## Authentication
-
-```text
-JWT
-bcrypt.js
-```
+</p>
 
 ---
 
-# 📂 Folder Structure
+## ✍️ Add Travel Story
+
+<p align="center">
+
+### Add Travel Story Screenshot Here
+
+<img src="YOUR_ADD_STORY_SCREENSHOT_URL" width="900"/>
+
+</p>
+
+---
+
+## 🗺️ Travel Story Feed
+
+<p align="center">
+
+### Add Story Feed Screenshot Here
+
+<img src="YOUR_FEED_SCREENSHOT_URL" width="900"/>
+
+</p>
+
+---
+
+## ℹ️ About Us
+
+<p align="center">
+
+### Add About Us Screenshot Here
+
+<img src="YOUR_ABOUT_SCREENSHOT_URL" width="900"/>
+
+</p>
+
+---
+
+# 📂 Project Structure
 
 ```bash
 RoamDiary
 │
 ├── frontend
 │   ├── src
-│   ├── assets
-│   ├── pages
 │   ├── components
-│   └── utils
+│   ├── pages
+│   └── assets
 │
 ├── backend
 │   ├── routes
 │   ├── models
 │   ├── middleware
-│   ├── controllers
 │   └── uploads
 │
 └── README.md
@@ -187,33 +170,8 @@ RoamDiary
 ### Clone Repository
 
 ```bash
-git clone https://github.com/ashokJoshi-w/RoamDiary.git
-cd RoamDiary
+git clone https://github.com/your-username/roamdiary.git
 ```
-
-### Backend Setup
-
-```bash
-cd backend
-npm install
-```
-
-Create `.env`
-
-```env
-PORT=5000
-MONGO_URI=your_mongodb_uri
-ACCESS_TOKEN_SECRET=your_secret
-FRONTEND_URL=http://localhost:5173
-```
-
-Start Backend
-
-```bash
-npm run dev
-```
-
----
 
 ### Frontend Setup
 
@@ -223,38 +181,41 @@ npm install
 npm run dev
 ```
 
----
+### Backend Setup
 
-# 🎯 Future Improvements
-
-* 🗺️ Interactive Maps
-* ☁️ Cloudinary Integration
-* 🌙 Dark Mode
-* 🤖 AI Travel Suggestions
-* 📱 Mobile App Version
-* 🌍 Public Travel Profiles
+```bash
+cd backend
+npm install
+npm start
+```
 
 ---
 
-# 📈 Learning Outcomes
+# 🌟 Future Improvements
 
-This project enhanced my skills in:
+* Interactive Travel Map
+* AI Travel Journal Assistant
+* Public Story Sharing
+* Travel Analytics
+* Dark Mode
+* Social Features
+* Story Categories
 
-* MERN Stack Development
-* REST API Design
-* Authentication & Authorization
-* File Upload Handling
-* MongoDB Database Design
-* Responsive UI Development
-* State Management
-* Production Deployment
+---
+
+# 👨‍💻 Author
+
+### Ashok
+
+Passionate Full-Stack Developer building modern web applications with React, Node.js, Express, and MongoDB.
 
 ---
 
 <div align="center">
 
-## 🌟 If you like this project, give it a star!
+### ⭐ If you like this project, consider giving it a star!
 
-### Built with ❤️ by Ashok Joshi
+**Made with ❤️ and a love for travel**
 
 </div>
+
