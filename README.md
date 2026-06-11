@@ -108,16 +108,6 @@ RoamDiary is a modern full-stack travel journaling platform that helps travelers
 
 ---
 
-## ✍️ Add Travel Story
-
-<p align="center">
-
-### Add Travel Story Screenshot Here
-
-<img src="YOUR_ADD_STORY_SCREENSHOT_URL" width="900"/>
-
-</p>
-
 
 ## ℹ️ About Us
 
